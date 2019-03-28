@@ -22,6 +22,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.ReactiveMongoDatabaseFactory;
 import org.springframework.util.StringUtils;
 
 /**
@@ -64,7 +65,9 @@ public class MongoDbFactoryDependsOnPostProcessor implements BeanFactoryPostProc
     }
 
     private String[] getMongoDbFactoryBeanNames(ListableBeanFactory beanFactory) {
-        return BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
+        String[] beanNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
+                beanFactory, ReactiveMongoDatabaseFactory.class, true, false);
+        return beanNames.length > 0 ? beanNames : BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
                 beanFactory, MongoDbFactory.class, true, false);
     }
 

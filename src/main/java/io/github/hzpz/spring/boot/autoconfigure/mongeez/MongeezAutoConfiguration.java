@@ -30,6 +30,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoProperties;
+import org.springframework.boot.autoconfigure.mongo.MongoReactiveAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +39,7 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.ReactiveMongoDatabaseFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -53,10 +55,10 @@ import javax.annotation.PostConstruct;
 @ConditionalOnBean(Mongo.class)
 @ConditionalOnProperty(prefix = "mongeez", name = "enabled", matchIfMissing = true)
 @EnableConfigurationProperties({MongoProperties.class, MongeezProperties.class})
-@AutoConfigureAfter(MongoAutoConfiguration.class)
+@AutoConfigureAfter({MongoAutoConfiguration.class, MongoReactiveAutoConfiguration.class})
 @AutoConfigureBefore(name = {
-        "org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration", // Spring Boot >= 1.3.0
-        "org.springframework.boot.autoconfigure.mongo.MongoDataAutoConfiguration" // Spring Boot < 1.3.0
+        "org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration",
+        "org.springframework.boot.autoconfigure.data.mongo.MongoReactiveDataAutoConfiguration",
 })
 public class MongeezAutoConfiguration {
 
@@ -120,7 +122,7 @@ public class MongeezAutoConfiguration {
      * depend-on the Mongeez bean.
      */
     @Configuration
-    @ConditionalOnClass(MongoDbFactory.class)
+    @ConditionalOnClass({MongoDbFactory.class, ReactiveMongoDatabaseFactory.class})
     protected static class MongeezDataMongoDependencyConfiguration {
 
         @Bean

@@ -30,13 +30,12 @@ import org.springframework.util.Assert;
 @Component
 public class DoNotExecuteMongeezPostProcessor implements BeanFactoryPostProcessor {
 
-    @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         String[] mongeezBeanNames = beanFactory.getBeanNamesForType(Mongeez.class);
-        Assert.state(mongeezBeanNames.length == 1);
+        Assert.state(mongeezBeanNames.length == 1, "Mongezz bean names");
         BeanDefinition beanDefinition = beanFactory.getBeanDefinition(mongeezBeanNames[0]);
-        Assert.state(beanDefinition instanceof RootBeanDefinition);
-        ((RootBeanDefinition) beanDefinition).setInitMethodName(null);
+        Assert.state(beanDefinition instanceof RootBeanDefinition, "Bean definitio state");
+        beanDefinition.setInitMethodName(null);
     }
 
 }
