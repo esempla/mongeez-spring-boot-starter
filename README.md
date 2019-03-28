@@ -12,10 +12,16 @@ The auto-configuration makes sure that the migrations happen before any Spring D
  * Add dependency to the Mongeez Spring Boot starter:
 
 <!-- -->
+    <repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
     <dependency>
-        <groupId>io.github.hzpz.spring.boot</groupId>
+        <groupId>com.github.esempla</groupId>
         <artifactId>mongeez-spring-boot-starter</artifactId>
-        <version>1.3.0</version>
+        <version>1.5.0</version>
     </dependency>
 
  * [Create a mongeez.xml file that includes all change logs][mongeez.xml] at `db/mongeez.xml`.
